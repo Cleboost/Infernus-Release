@@ -8,7 +8,7 @@ jobs:
     steps:
     - uses: robinraju/release-downloader@v1.7
       with:
-        token: "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"
+        token: ${{ secrets.GITHUB_TOKEN }}
         repository: "Cleboost/Infernus-Launcher-V2"
         latest: true
         fileName: "*"
