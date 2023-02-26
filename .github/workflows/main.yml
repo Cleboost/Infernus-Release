@@ -9,7 +9,7 @@ jobs:
     - uses: robinraju/release-downloader@v1.7
       with:
         repository: "Cleboost/Infernus-Launcher-V2"
-        latest: true
+        tag: "1.1.0"
         fileName: "*"
         
     - run: ls
