@@ -3,39 +3,22 @@ name: Import release from another repository
 on: workflow_dispatch
 
 jobs:
-  import-release:
+  transfer-release:
     runs-on: ubuntu-latest
     steps:
-    - uses: robinraju/release-downloader@v1.7
-      with: 
-        # The source repository path.
-        # Expected format {owner}/{repo}
-        # Default: ${{ github.repository }}
-        repository: "Cleboost/Infernus-Launcher-V2"
-
-        # The github tag. e.g: v1.0.1
-        # Download assets from a specific tag/version
-        tag: "1.1.0"
-
-        # The name of the file to download.
-        # Use this field only to specify filenames other than tarball or zipball, if any.
-        # Supports wildcard pattern (eg: '*', '*.deb', '*.zip' etc..)
-        fileName: "*"
-
-        # Download the attached tarball (*.tar.gz)
-        tarBall: false
-
-        # Download the attached zipball (*.zip)
-        zipBall: false
-
-        # Relative path under $GITHUB_WORKSPACE to place the downloaded file(s)
-        # It will create the target directory automatically if not present
-        # eg: out-file-path: "my-downloads" => It will create directory $GITHUB_WORKSPACE/my-downloads
-        out-file-path: "out"
-
-        # Github access token to download files from private repositories
-        # https://docs.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets
-        # eg: token: ${{ secrets.MY_TOKEN }}
-        token: "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"
-        
-    - run: ls
+    - name: Download Release
+      run: |
+        curl -LJO $(curl -s https://api.github.com/repos/Cleboost/Infernus-Launcher-V2/releases/latest | jq -r '.assets[0].browser_download_url')
+    - name: Upload Release
+      uses: actions/upload-artifact@v2
+      with:
+        name: release
+        path: release.zip
+    - name: Deploy Release
+      uses: dawidd6/action-deploy-release@v2
+      with:
+        args: |
+          --token ${{ secrets.GITHUB_TOKEN }}
+          --file release.zip
+          --tag inpending
+          --repo Cleboost/Infernus-Release
