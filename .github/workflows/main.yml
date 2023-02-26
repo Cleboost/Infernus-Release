@@ -1,0 +1,33 @@
+name: Import release from another repository
+
+on: workflow_dispatch
+
+jobs:
+  import-release:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download release artifact
+      uses: dawidd6/action-download-release@v3
+      with:
+        repo: Cleboost/Infernus-Launcher-V2
+        tag: realesed
+        name_pattern: '.*'
+        token: ${{ secrets.PAT }}
+    - name: Import release assets
+      id: import-release-assets
+      run: |
+        for file in *.tar.gz; do
+          filename=$(basename "$file")
+          echo "Importing asset $filename"
+          echo "::set-output name=filename::$filename"
+          echo "::set-output name=filepath::$file"
+        done
+      shell: bash
+    - name: Upload release assets
+      uses: actions/upload-release-asset@v1
+      with:
+        asset_path: ${{ steps.import-release-assets.outputs.filepath }}
+        asset_name: ${{ steps.import-release-assets.outputs.filename }}
+        release_id: ${{ github.event.release.id }}
+        repository: Cleboost/Infernus-Release
+        token: ${{ secrets.PAT }}
