@@ -36,6 +36,6 @@ jobs:
         # Github access token to download files from private repositories
         # https://docs.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets
         # eg: token: ${{ secrets.MY_TOKEN }}
-        token: "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"
+        token: "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"
         
     - run: ls
