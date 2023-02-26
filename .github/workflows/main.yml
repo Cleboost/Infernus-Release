@@ -10,7 +10,7 @@ jobs:
       with:
         token: "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"
         repository: "Cleboost/Infernus-Launcher-V2"
-        tag: "1.1.0"
+        latest: true
         fileName: "*"
         
     - run: ls
