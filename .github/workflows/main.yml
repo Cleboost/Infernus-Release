@@ -7,10 +7,35 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: robinraju/release-downloader@v1.7
-      with:
-        token: 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
-        repository: "Cleboost/Infernus-Launcher-V2"
-        latest: true
+      with: 
+        # The source repository path.
+        # Expected format {owner}/{repo}
+        # Default: ${{ github.repository }}
+        repository: ""
+
+        # The github tag. e.g: v1.0.1
+        # Download assets from a specific tag/version
+        tag: "1.1.0"
+
+        # The name of the file to download.
+        # Use this field only to specify filenames other than tarball or zipball, if any.
+        # Supports wildcard pattern (eg: '*', '*.deb', '*.zip' etc..)
         fileName: "*"
+
+        # Download the attached tarball (*.tar.gz)
+        tarBall: false
+
+        # Download the attached zipball (*.zip)
+        zipBall: false
+
+        # Relative path under $GITHUB_WORKSPACE to place the downloaded file(s)
+        # It will create the target directory automatically if not present
+        # eg: out-file-path: "my-downloads" => It will create directory $GITHUB_WORKSPACE/my-downloads
+        out-file-path: "out"
+
+        # Github access token to download files from private repositories
+        # https://docs.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets
+        # eg: token: ${{ secrets.MY_TOKEN }}
+        token: "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"
         
     - run: ls
