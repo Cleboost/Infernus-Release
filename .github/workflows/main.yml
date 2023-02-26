@@ -11,7 +11,7 @@ jobs:
         # The source repository path.
         # Expected format {owner}/{repo}
         # Default: ${{ github.repository }}
-        repository: ""
+        repository: "Cleboost/Infernus-Launcher-V2"
 
         # The github tag. e.g: v1.0.1
         # Download assets from a specific tag/version
