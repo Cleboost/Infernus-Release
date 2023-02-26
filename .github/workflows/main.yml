@@ -6,19 +6,27 @@ jobs:
   transfer-release:
     runs-on: ubuntu-latest
     steps:
-    - name: Download Release
+    - name: Checkout Code
+      uses: actions/checkout@v2
+    - name: Download Release Assets
       run: |
-        curl -LJO $(curl -s https://api.github.com/repos/Cleboost/Infernus-Launcher-V2/releases/latest | jq -r '.assets[0].browser_download_url')
-    - name: Upload Release
-      uses: actions/upload-artifact@v2
+        curl -LJO $(curl -s https://api.github.com/repos/Cleboost/{Infernus-Launcher-V2/releases/latest | jq -r '.assets[0].browser_download_url')
+    - name: Create New Release
+      uses: actions/create-release@v1
+      id: create_release
       with:
-        name: release
-        path: release.zip
-    - name: Deploy Release
-      uses: dawidd6/action-deploy-release@v2
+        tag_name: v1.0
+        release_name: Release v1.0
+        body: |
+          This is the first release of the repo.
+        draft: false
+        prerelease: false
+        token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
       with:
-        args: |
-          --token ${{ secrets.GITHUB_TOKEN }}
-          --file release.zip
-          --tag inpending
-          --repo Cleboost/Infernus-Release
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./release.zip
+        asset_name: release.zip
+        asset_content_type: application/zip
+        token: ${{ secrets.GITHUB_TOKEN }}
